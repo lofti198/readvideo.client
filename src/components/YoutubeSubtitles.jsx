@@ -1,4 +1,5 @@
 import { useState, useEffect,useMemo, useRef } from 'react';
+import { Alert, Button } from 'react-bootstrap';
 
 // Use environment variables to get the URLs
 const URL_DEV = import.meta.env.VITE_API_URL_DEV;
@@ -9,10 +10,31 @@ console.log(import.meta.env.MODE, URLBase)
 const language = "en"
 const YouTubeSubtitles = ({ videoId }) => {
   const [transcript, setTranscript] = useState([]);
-  
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [notificationType, setNotificationType] = useState('');
+  const [notificationText, setNotificationText] = useState('');
+
   const prevVideoIdRef = useRef();
   // Memoize the cachedTranscripts to keep it constant across renders
   const cachedTranscripts = useMemo(() => new Map(), []);
+
+  
+  const showNotification = (text, type) => {
+    if(!type)type="info";
+
+    setNotificationText(text);
+    setNotificationType(type);
+    setShowAlert(true);
+    
+    // Hide the alert after 2 seconds
+    setTimeout(() => {
+      setShowAlert(false);
+      setNotificationText('');
+      setNotificationType('');
+    }, 2000);
+  };
+
 
   useEffect(() => {
     console.log("useeffect",videoId, prevVideoIdRef )
@@ -24,9 +46,10 @@ const YouTubeSubtitles = ({ videoId }) => {
 
   const fetchTranscript = async () => {
     try {
+
       // Generate a unique key for caching based on both videoId and language
       const cacheKey = `${videoId}_${language}`;
-
+      
       // Check if the transcript is already cached for the given key
       if (cachedTranscripts.has(cacheKey)) {
       
@@ -39,15 +62,19 @@ const YouTubeSubtitles = ({ videoId }) => {
        
         if (result.ok) {
           const captions = await result.json();
-          
+          showNotification('Transcript fetched successfully!');
           console.log("fetched", captions)
           setTranscript(captions);
 
           // Cache the transcript data for future use
           cachedTranscripts.set(cacheKey, captions);
+        } else {
+          // If the result is not okay, throw an exception
+          throw new Error('Error fetching subtitles. HTTP status: ' + result.status);
         }
       }
     } catch (error) {
+      showNotification('Error fetching subtitles!','error');
       console.error('Error fetching subtitles:', error);
     }
   };
@@ -75,6 +102,11 @@ const YouTubeSubtitles = ({ videoId }) => {
 
   return (
     <div>
+    {showAlert && (
+        <Alert variant={notificationType === 'info' ? 'info' : (notificationType === 'warning' ? 'warning' : 'danger')} onClose={() => setShowAlert(false)} dismissible className="alert-top">
+          {notificationText}
+        </Alert>
+      )}
       <div>
       <p>
           <b>Operations with captions: </b>

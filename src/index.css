@@ -66,3 +66,27 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.alert-top {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; /* Adjust this value as needed */
+  width: 100%;
+}
+
+.alert-info {
+  background-color: #d1ecf1; /* Change this color for info alerts */
+  color: #0c5460;
+}
+
+.alert-warning {
+  background-color: #fff3cd; /* Change this color for warning alerts */
+  color: #856404;
+}
+
+.alert-error {
+  background-color: #f8d7da; /* Change this color for error alerts */
+  color: #721c24;
+}
