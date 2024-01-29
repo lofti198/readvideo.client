@@ -3,8 +3,8 @@ import { useState, useEffect,useMemo, useRef } from 'react';
 // Use environment variables to get the URLs
 const URL_DEV = import.meta.env.VITE_API_URL_DEV;
 const URL_PROD = import.meta.env.VITE_API_URL_PROD;
-const URLBase = import.meta.env.MODE !== 'production' ? URL_PROD : URL_DEV;
-
+const URLBase = import.meta.env.MODE === 'production' ? URL_PROD : URL_DEV;
+// dev
 console.log(import.meta.env.MODE, URLBase)
 const language = "en"
 const YouTubeSubtitles = ({ videoId }) => {
