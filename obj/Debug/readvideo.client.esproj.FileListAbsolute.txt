@@ -1,0 +1,1 @@
+C:\Dev\ASP\ReadVideo\readvideo.client\obj\Debug\readvideo.client.esproj.CoreCompileInputs.cache
