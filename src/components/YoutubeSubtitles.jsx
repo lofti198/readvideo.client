@@ -5,10 +5,10 @@ import { Alert, Button } from 'react-bootstrap';
 const URL_DEV = import.meta.env.VITE_API_URL_DEV;
 const URL_PROD = import.meta.env.VITE_API_URL_PROD;
 const URLBase = import.meta.env.MODE === 'production' ? URL_PROD : URL_DEV;
-// dev
-console.log(import.meta.env.MODE, URLBase)
+
+// console.log(import.meta.env.MODE, URLBase)
 const language = "en"
-const YouTubeSubtitles = ({ videoId }) => {
+const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
   const [transcript, setTranscript] = useState([]);
 
   const [showAlert, setShowAlert] = useState(false);
@@ -36,13 +36,13 @@ const YouTubeSubtitles = ({ videoId }) => {
   };
 
 
-  useEffect(() => {
-    console.log("useeffect",videoId, prevVideoIdRef )
-    if(prevVideoIdRef.current!==videoId)
-      fetchTranscript();
+  // useEffect(() => {
+  //   console.log("useeffect",videoId, prevVideoIdRef )
+  //   if(prevVideoIdRef.current!==videoId)
+  //     fetchTranscript();
 
-    prevVideoIdRef.current = videoId;
-  },[videoId])
+  //   prevVideoIdRef.current = videoId;
+  // },[videoId])
 
   const fetchTranscript = async () => {
     try {
@@ -102,12 +102,23 @@ const YouTubeSubtitles = ({ videoId }) => {
 
   return (
     <div>
+      <button
+        type="button"
+        className="btn btn-primary"
+        onClick={fetchTranscript}
+      >
+        Get Captions
+      </button>
+
     {showAlert && (
         <Alert variant={notificationType === 'info' ? 'info' : (notificationType === 'warning' ? 'warning' : 'danger')} onClose={() => setShowAlert(false)} dismissible className="alert-top">
           {notificationText}
         </Alert>
       )}
-      <div>
+      {transcript.length > 0 &&
+      
+      (
+        <div>
       <p>
           <b>Operations with captions: </b>
           <span
@@ -153,6 +164,8 @@ const YouTubeSubtitles = ({ videoId }) => {
           </tbody>
         </table>
       </div>
+      )}
+      
     </div>
   );
 };

@@ -1,21 +1,31 @@
 // src/components/Home.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import YouTubeSubtitles from '../YoutubeSubtitles';
 
 const Home = () => {
   const [youtubeVideoLink, setYoutubeVideoLink] = useState('');
-  const [showSubtitles, setShowSubtitles] = useState(false);
+  const [showSubtitleBlock, setShowSubtitleBlock] = useState(false);
   const [warningMessage, setWarningMessage] = useState('');
+  const [videoId, setVideoId] = useState('');
+
+  useEffect(() => {
+    // Logic to handle changes in youtubeVideoLink
+    setShowSubtitleBlock(false);
+    setWarningMessage('');
+
+    const videoIdTemp = extractVideoId(youtubeVideoLink);
+    console.log("useEffect", videoIdTemp);
+    if (videoIdTemp) {
+      setShowSubtitleBlock(true);
+      setVideoId(videoIdTemp)
+      setWarningMessage(''); // Clear warning if videoId is successfully extracted
+    } else {
+      if(youtubeVideoLink)setWarningMessage('Invalid YouTube link. Please enter a valid link.');
+    }
+  }, [youtubeVideoLink]);
 
   const handleGetCaptions = () => {
-    setShowSubtitles(false);
-    const videoId = extractVideoId(youtubeVideoLink);
-    if (videoId) {
-      setShowSubtitles(true);
-      setWarningMessage(''); // Clear warning if videoId is successfully extracted
-    } else { 
-      setWarningMessage('Invalid YouTube link. Please enter a valid link.');
-    }
+    console.log("handleGetCaptions")
   };
 
   return (
@@ -29,21 +39,14 @@ const Home = () => {
           className="form-control"
           id="youtubeLink"
           value={youtubeVideoLink}
-          onChange={(e) => {setYoutubeVideoLink(e.target.value);setWarningMessage('');}}
+          onChange={(e) => {setYoutubeVideoLink(e.target.value);}}
         />
       </div>
 
-      <button
-        type="button"
-        className="btn btn-primary"
-        onClick={handleGetCaptions}
-      >
-        Get Captions
-      </button>
 
       {warningMessage && <p className="text-danger mt-2">{warningMessage}</p>}
 
-      {showSubtitles && <YouTubeSubtitles videoId={extractVideoId(youtubeVideoLink)} />}
+      {showSubtitleBlock && <YouTubeSubtitles videoId={videoId} handleGetCaptions={handleGetCaptions} />}
     </div>
   );
 };
