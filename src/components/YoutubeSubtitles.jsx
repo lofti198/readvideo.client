@@ -44,6 +44,8 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
   //   prevVideoIdRef.current = videoId;
   // },[videoId])
 
+  
+
   const fetchTranscript = async () => {
     try {
 
@@ -56,22 +58,46 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
         const cachedData = cachedTranscripts.get(cacheKey);
         setTranscript(cachedData);
       } else {
-        const URL = `${URLBase}?videoId=${videoId}&language=${language}`
-        console.log("fetch from: ", URL)
-        const result = await fetch(URL);
-       
-        if (result.ok) {
-          const captions = await result.json();
-          showNotification('Transcript fetched successfully!');
-          console.log("fetched", captions)
-          setTranscript(captions);
 
-          // Cache the transcript data for future use
-          cachedTranscripts.set(cacheKey, captions);
-        } else {
-          // If the result is not okay, throw an exception
-          throw new Error('Error fetching subtitles. HTTP status: ' + result.status);
-        }
+        // Get user data from localStorage
+        const userProfile = JSON.parse(localStorage.getItem('profile'));
+        const userEmail = userProfile.email;
+        const userFullname = userProfile.name;
+
+        // Define the URL
+        const URL = `${URLBase}/LoadSubtitles`;
+
+        // Create a UserRequest object with videoId, language, email, and fullname
+        const userRequest = {
+          videoId: videoId, // Replace with the actual videoId
+          language: language, // Replace with the actual language
+          email: userEmail,
+          fullname: userFullname,
+        };
+        console.log(`userRequyest:`,userRequest)
+        
+          // Fetch subtitles using POST request
+          const result = await fetch(URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userRequest),
+          });
+
+          if (result.ok) {
+            const captions = await result.json();
+            showNotification('Transcript fetched successfully!');
+            console.log("fetched", captions)
+            setTranscript(captions);
+
+            // Cache the transcript data for future use
+            cachedTranscripts.set(cacheKey, captions);
+          } else {
+            // If the result is not okay, throw an exception
+            throw new Error('Error fetching subtitles. HTTP status: ' + result.status);
+          }
+      
       }
     } catch (error) {
       showNotification('Error fetching subtitles!','error');
