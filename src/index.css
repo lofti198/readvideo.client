@@ -23,11 +23,11 @@ a:hover {
 }
 
 body {
-  margin: 0;
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  margin: 0;
 }
 
 h1 {
@@ -89,4 +89,8 @@ button:focus-visible {
 .alert-error {
   background-color: #f8d7da; /* Change this color for error alerts */
   color: #721c24;
+}
+
+.wide-input {
+  width: 400px;
 }

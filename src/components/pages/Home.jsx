@@ -30,13 +30,12 @@ const Home = () => {
 
   return (
     <div className="d-flex flex-column align-items-center">
-      <h1 className="text-center mb-4">YouTube Subtitles Extractor</h1>
-
+      
       <div className="mb-3">
         <label htmlFor="youtubeLink" className="form-label">Enter YouTube Video Link:</label>
         <input
           type="text"
-          className="form-control"
+          className="form-control wide-input"
           id="youtubeLink"
           value={youtubeVideoLink}
           onChange={(e) => {setYoutubeVideoLink(e.target.value);}}
