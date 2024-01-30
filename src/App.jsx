@@ -11,23 +11,23 @@ import axios from 'axios';
 
 function App() {
 
-  const [ user, setUser ] = useState([]);
+  const [ user, setUser ] = useState(null);
    
     const [profile, setProfile] = useState(() => {
       // Retrieve profile from localStorage on component mount
       const storedProfile = localStorage.getItem('profile');
-      return storedProfile ? JSON.parse(storedProfile) : {};
+      return storedProfile ? JSON.parse(storedProfile) : null;
     });
 
     const login = useGoogleLogin({
         onSuccess: (codeResponse) => {console.log('codeResponse:', codeResponse) ;  setUser(codeResponse)},
         onError: (error) => console.log('Login Failed:', error) 
     });
-    useEffect(()=>{console.log(`profile`,profile,profile.length)},[profile]
-    )
+   
     useEffect(
         () => {
             if (user) {
+              console.log(user, user.access_token)
                 axios
                     .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
                         headers: {
