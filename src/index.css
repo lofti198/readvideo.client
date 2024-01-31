@@ -22,14 +22,21 @@ a:hover {
   color: #535bf2;
 }
 
-body {
+/* body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50vh;
+  height: 250px;
   margin: 0;
+} */
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px;
+  padding: 0;
+  min-height: 100vh;
 }
-
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -52,6 +59,10 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.center-button {
+  margin: 0 auto;
 }
 
 @media (prefers-color-scheme: light) {
@@ -93,4 +104,8 @@ button:focus-visible {
 
 .wide-input {
   width: 400px;
+}
+
+.alert-bottom {
+  margin-bottom: 0px; /* Adjust the margin as needed */
 }

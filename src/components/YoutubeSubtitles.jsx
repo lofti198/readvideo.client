@@ -120,7 +120,7 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
     const fullText = additionalText ? `${additionalText}\n${subtitlesText}` : subtitlesText;
 
     navigator.clipboard.writeText(fullText)
-      .then(() => alert('Text copied to clipboard!'))
+      .then(() => showNotification('Text copied to clipboard!'))
       .catch((err) => console.error('Error copying text:', err));
   };
 
@@ -128,19 +128,24 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
 
   return (
     <div>
-      <button
-        type="button"
-        className="btn btn-primary"
-        onClick={fetchTranscript}
-      >
-        Get Captions
-      </button>
-
+      
     {showAlert && (
-        <Alert variant={notificationType === 'info' ? 'info' : (notificationType === 'warning' ? 'warning' : 'danger')} onClose={() => setShowAlert(false)} dismissible className="alert-top">
+        <Alert variant={notificationType === 'info' ? 'info' : (notificationType === 'warning' ? 'warning' : 'danger')} onClose={() => setShowAlert(false)} dismissible className="alert-bottom fixed-bottom">
           {notificationText}
         </Alert>
       )}
+      {
+        transcript.length==0 && 
+        (  <button
+          type="button"
+          className="btn btn-primary center-button"
+          onClick={fetchTranscript}
+        >
+          Get Captions
+        </button>)
+      }
+     
+
       {transcript.length > 0 &&
       
       (
@@ -152,7 +157,7 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
             onClick={() => handleCopySubtitles('')}
           >
             copy
-          </span>, prompt GPT to 
+          </span>, prompt GPT to:  
           <span
             style={{ textDecoration: 'underline', cursor: 'pointer' }}
             onClick={() => handleCopySubtitles(`Given the following randomly broken YouTube subtitles and their corresponding offsets, please organize them into a coherent and logical text. 
