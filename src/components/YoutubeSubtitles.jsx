@@ -60,13 +60,13 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
       
         // Define the URL
         const URL = `${URLBase}?videoId=${videoId}&language=${language}`;
-
+        
         const response = await fetch(URL, {
           method: 'GET', // Changed from POST to GET
           headers: {
             'Content-Type': 'application/json',
             'Email': userProfile.email,
-            'Name': userProfile.name
+           
             // 'Authorization': `Bearer ${jwtToken}`, // Include the JWT token in the Authorization header
           },
           // No body is needed for a GET request
