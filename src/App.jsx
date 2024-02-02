@@ -20,7 +20,23 @@ function App() {
     });
 
     const login = useGoogleLogin({
-        onSuccess: (codeResponse) => {console.log('codeResponse:', codeResponse) ;  setUser(codeResponse)},
+      // flow: 'auth-code',
+        onSuccess: (codeResponse) => {
+          console.log('codeResponse1:', codeResponse) ;  
+          const requestObject = { accesstoken: codeResponse.access_token }
+          console.log(requestObject)
+          axios.post('/api/authentication/google', requestObject)
+  .then(response => {
+    console.log("auth server responce",response)
+    // Handle response, which should include the JWT your backend generates
+  })
+  .catch(error => {
+    console.log('Error sending token to backend:', error);
+  });
+
+          // setUser(codeResponse)
+      
+      },
         onError: (error) => console.log('Login Failed:', error) 
     });
    
