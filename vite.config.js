@@ -57,7 +57,10 @@ export default defineConfig({
                 target: 'https://localhost:7271/',
                 secure: false
             },
-      
+            '/api/authentication': {
+                target: 'https://localhost:7271/',
+                secure: false
+            },
             // '/api/youtubesubtitles': {
             //     target: 'http://localhost:5038/',
             //     secure: false
