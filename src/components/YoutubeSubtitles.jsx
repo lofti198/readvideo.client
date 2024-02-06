@@ -2,12 +2,12 @@ import { useState, useEffect,useMemo, useRef } from 'react';
 import { Alert, Button } from 'react-bootstrap';
 
 // Use environment variables to get the URLs
-const URL_DEV = import.meta.env.VITE_API_URL_DEV;
+const URL_DEV = import.meta.env.VITE_API_URL_DEV//"https://localhost:7271/api/youtubesubtitles"// import.meta.env.VITE_API_URL_DEV; //
 const URL_PROD = import.meta.env.VITE_API_URL_PROD;
 const URLBase = import.meta.env.MODE === 'production' ? URL_PROD : URL_DEV;
 
 console.log(import.meta.env.MODE, URLBase)
-const language = "en"
+const language = ""
 const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
   const [transcript, setTranscript] = useState([]);
 
@@ -143,18 +143,25 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
             onClick={() => handleCopySubtitles('')}
           >
             copy
-          </span>, prompt GPT to:  
+          </span>, prompt GPT to:&nbsp;  
           <span
             style={{ textDecoration: 'underline', cursor: 'pointer' }}
-            onClick={() => handleCopySubtitles(`Given the following randomly broken YouTube subtitles and their corresponding offsets, please organize them into a coherent and logical text. 
-            Focus on accurately determining where punctuation marks, especially sentence separators, should be located. Minimize rephrasing unless necessary to enhance clarity. 
-            Consider the duration of each phrase and pauses between them to ensure the resulting text preserves the original meaning as closely as possible. 
-            Additionally, divide the resulting text into logical paragraphs. 
-            Aim for paragraphs of ideally 3-4 sentences each. This will help maintain readability and structure in the final output. 
-            Also  (if it is possible) lets unite paragraphs into logical text sections of 2-5 paragraphs (each having its header).')}
-            `)}
+            onClick={() => handleCopySubtitles(`Given the following randomly broken YouTube subtitles and their corresponding offsets (if available), please organize them into a coherent and logical text. 
+Focus on accurately determining where punctuation marks, especially sentence separators, should be located. Minimize rephrasing unless necessary to enhance clarity. 
+Consider the duration of each phrase and pauses between them to ensure the resulting text preserves the original meaning as closely as possible. 
+Additionally, divide the resulting text into logical paragraphs. 
+Aim for paragraphs of ideally 3-4 sentences each. This will help maintain readability and structure in the final output. 
+Also  (if it is possible) lets unite paragraphs into logical text sections of 2-5 paragraphs (each having its header).
+The source text given below:`)}
             >
             turn in text
+          </span>,&nbsp;  
+          <span
+            style={{ textDecoration: 'underline', cursor: 'pointer' }}
+            onClick={() => handleCopySubtitles(`Given the following randomly broken YouTube subtitles and their corresponding offsets, please organize them into a short summary with main ideas.
+The source text given below:`)}
+            >
+            make text summary
           </span>
           {/* , 
           <span

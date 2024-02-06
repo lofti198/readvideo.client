@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Home from './components/pages/Home';
+import Navbar from './components/layout/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import { GoogleLogin } from '@react-oauth/google';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
@@ -57,9 +58,11 @@ function App() {
 
 
   return (
-    <div className="d-flex flex-column align-items-center">
-      <h1 className="text-center mb-4">YouTube Subtitles Extractor</h1>
-      
+
+    <>
+      <Navbar />
+      {/* <h1 className="text-center mb-4">YouTube Subtitles Extractor</h1>
+       */}
     
       
      
@@ -70,7 +73,7 @@ function App() {
                 <button onClick={() => login()}>Sign in with Google 🚀 </button>
             )}
       
-    </div>
+    </>
   );
 }
 
