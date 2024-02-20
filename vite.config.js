@@ -53,7 +53,7 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '/api/youtubesubtitles': {
+            '/api/youtubesubtitles/loadtextblocks': {
                 target: 'https://localhost:7271/',
                 secure: false
             },

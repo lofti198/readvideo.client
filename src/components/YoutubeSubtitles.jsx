@@ -59,8 +59,9 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
         // console.log(jwtToken)
       
         // Define the URL
-        const URL = `${URLBase}?videoId=${videoId}&language=${language}`;
-        
+        const URL = `${URLBase}?videoId=${videoId}&minspan=${2000}`;
+        console.log(URL)
+        // youtubesubtitles/LoadTextBlocks?videoId=fhM0V2N1GpY&language=en&minspan=2000
         const response = await fetch(URL, {
           method: 'GET', // Changed from POST to GET
           headers: {
@@ -106,10 +107,20 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
     const fullText = additionalText ? `${additionalText}\n${subtitlesText}` : subtitlesText;
 
     navigator.clipboard.writeText(fullText)
-      .then(() => showNotification('Text copied to clipboard!'))
+      .then(() => showNotification('All subtitles copied to clipboard!'))
       .catch((err) => console.error('Error copying text:', err));
   };
 
+
+  const copyCellToClipboard = (text) => {
+    navigator.clipboard.writeText(`Subtitle text block from video 'VIDEO_NAME' at URL:
+${text}
+
+`)
+
+      .then(() => showNotification('Text copied to clipboard!'))
+      .catch((err) => console.error('Failed to copy text to clipboard:', err));
+  };
 
 
   return (
@@ -171,7 +182,7 @@ The source text given below:`)}
             summarize
           </span> */}
         </p>
-        <table className="table">
+        <table className="fixed-width-table">
           <thead>
             <tr>
               <th scope="col">Offset</th>
@@ -182,7 +193,7 @@ The source text given below:`)}
             {transcript.map((caption, index) => (
               <tr key={index}>
                 <td>{formatOffset(caption.Offset)}</td>
-                <td>{caption.Text}</td>
+                <td class="caption-text" onDoubleClick={() => copyCellToClipboard(caption.Text)} >{caption.Text}</td>
               </tr>
             ))}
           </tbody>
