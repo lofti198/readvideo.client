@@ -15,7 +15,8 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
   const [notificationType, setNotificationType] = useState('');
   const [notificationText, setNotificationText] = useState('');
 
-  const prevVideoIdRef = useRef();
+  const videoInfo = useRef(null);
+
   // Memoize the cachedTranscripts to keep it constant across renders
   const cachedTranscripts = useMemo(() => new Map(), []);
 
@@ -77,13 +78,13 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
        
-            const captions = await response.json();
+            const responseData = await response.json();
             showNotification('Transcript fetched successfully!');
-            console.log("fetched", captions)
-            setTranscript(captions);
-
+            console.log("fetched", responseData)
+            setTranscript(responseData.Captions);
+            videoInfo.current = responseData.VideoInfo;
             // Cache the transcript data for future use
-            cachedTranscripts.set(cacheKey, captions);
+            cachedTranscripts.set(cacheKey, responseData.Captions);
          
       }
     } catch (error) {
@@ -113,7 +114,7 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
 
 
   const copyCellToClipboard = (text) => {
-    navigator.clipboard.writeText(`Subtitle text block from video 'VIDEO_NAME' at URL:
+    navigator.clipboard.writeText(`Subtitle text block from video '${videoInfo.current.Title}' at URL ${videoInfo.current.Url}:
 ${text}
 
 `)
@@ -193,7 +194,7 @@ The source text given below:`)}
             {transcript.map((caption, index) => (
               <tr key={index}>
                 <td>{formatOffset(caption.Offset)}</td>
-                <td class="caption-text" onDoubleClick={() => copyCellToClipboard(caption.Text)} >{caption.Text}</td>
+                <td className="caption-text" onDoubleClick={() => copyCellToClipboard(caption.Text)} >{caption.Text}</td>
               </tr>
             ))}
           </tbody>
