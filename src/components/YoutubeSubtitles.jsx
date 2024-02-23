@@ -75,7 +75,11 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
         });
     
         if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          // Try to read the error details from the response body
+          const errorBody = await response.json(); // Assuming the server sends JSON-formatted error details
+          console.log(errorBody)
+          const errorMessage = errorBody.Message || `HTTP error! Status: ${response.status}`; // Customize this line based on your server's error response structure
+          throw new Error(errorMessage);
         }
        
             const responseData = await response.json();
@@ -88,7 +92,8 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
          
       }
     } catch (error) {
-      showNotification('Error fetching subtitles!','error');
+      
+      showNotification(`${error}`,'error');
       console.error('Error fetching subtitles:', error);
     }
   };
