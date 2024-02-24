@@ -61,7 +61,7 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions,showGetCaptionsButton, se
         // console.log(jwtToken)
       
         // Define the URL
-        const URL = `${URLBase}?videoId=${videoId}&minspan=${1500}`;
+        const URL = `${URLBase}?videoId=${videoId}&minspan=${1200}`;
         console.log(URL)
         // youtubesubtitles/LoadTextBlocks?videoId=fhM0V2N1GpY&language=en&minspan=2000
         const response = await fetch(URL, {
