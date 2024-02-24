@@ -51,7 +51,7 @@ button {
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
-  cursor: pointer;
+  /* cursor: pointer; */
   transition: border-color 0.25s;
 }
 button:hover {
@@ -178,6 +178,6 @@ body {
   padding: 5px; /* Add some padding inside the cells */
   margin: 2px; /* Add some space around the cells */
   display: inline-block; /* This will allow the background and border-radius to fit the content */
-  cursor: default;
-  user-select: none;
+  /* cursor: default; 
+  user-select: none;*/
 }
