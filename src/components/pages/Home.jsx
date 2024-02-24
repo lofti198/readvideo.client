@@ -7,9 +7,11 @@ const Home = () => {
   const [showSubtitleBlock, setShowSubtitleBlock] = useState(false);
   const [warningMessage, setWarningMessage] = useState('');
   const [videoId, setVideoId] = useState('');
+  const [showGetCaptionsButton,setShowGetCaptionsButton] = useState(false);
 
   useEffect(() => {
     // Logic to handle changes in youtubeVideoLink
+    setShowGetCaptionsButton(true)
     setShowSubtitleBlock(false);
     setWarningMessage('');
 
@@ -45,7 +47,8 @@ const Home = () => {
 
       {warningMessage && <p className="text-danger mt-2">{warningMessage}</p>}
      
-      {showSubtitleBlock && <YouTubeSubtitles videoId={videoId} handleGetCaptions={handleGetCaptions} />}
+      {showSubtitleBlock && <YouTubeSubtitles videoId={videoId} handleGetCaptions={handleGetCaptions}  
+        showGetCaptionsButton={showGetCaptionsButton} setShowGetCaptionsButton={setShowGetCaptionsButton}/>}
     </div>
   );
 };
@@ -54,7 +57,7 @@ const Home = () => {
 const extractVideoId = (link) => {
   // Logic to extract videoId from YouTube link goes here
   // For simplicity, let's assume the link is in the format: https://www.youtube.com/watch?v=VIDEO_ID
-  const match = link.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  const match = link.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{5,15})/);
   return match ? match[1] : '';
 };
 

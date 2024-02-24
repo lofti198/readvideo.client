@@ -8,7 +8,7 @@ const URLBase = import.meta.env.MODE === 'production' ? URL_PROD : URL_DEV;
 
 console.log(import.meta.env.MODE, URLBase)
 const language = ""
-const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
+const YouTubeSubtitles = ({ videoId ,handleGetCaptions,showGetCaptionsButton, setShowGetCaptionsButton}) => {
   const [transcript, setTranscript] = useState([]);
   const [showLoadingSpinner,setShowLoadingSpinner]= useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -61,7 +61,7 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
         // console.log(jwtToken)
       
         // Define the URL
-        const URL = `${URLBase}?videoId=${videoId}&minspan=${2000}`;
+        const URL = `${URLBase}?videoId=${videoId}&minspan=${1500}`;
         console.log(URL)
         // youtubesubtitles/LoadTextBlocks?videoId=fhM0V2N1GpY&language=en&minspan=2000
         const response = await fetch(URL, {
@@ -90,6 +90,7 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
             videoInfo.current = responseData.VideoInfo;
             // Cache the transcript data for future use
             cachedTranscripts.set(cacheKey, responseData.Captions);
+            setShowGetCaptionsButton(false);
          
       }
     } catch (error) {
@@ -142,7 +143,7 @@ ${text}
         </Alert>
       )}
       {
-        transcript.length==0 && 
+        showGetCaptionsButton && 
         (  !showLoadingSpinner ? (<button
           type="button"
           className="btn btn-primary center-button"
