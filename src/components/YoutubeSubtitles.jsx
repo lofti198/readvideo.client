@@ -1,6 +1,6 @@
 import { useState, useEffect,useMemo, useRef } from 'react';
 import { Alert, Button } from 'react-bootstrap';
-
+import Spinner from "./common/Spinner";
 // Use environment variables to get the URLs
 const URL_DEV = import.meta.env.VITE_API_URL_DEV//"https://localhost:7271/api/youtubesubtitles"// import.meta.env.VITE_API_URL_DEV; //
 const URL_PROD = import.meta.env.VITE_API_URL_PROD;
@@ -10,7 +10,7 @@ console.log(import.meta.env.MODE, URLBase)
 const language = ""
 const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
   const [transcript, setTranscript] = useState([]);
-
+  const [showLoadingSpinner,setShowLoadingSpinner]= useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [notificationType, setNotificationType] = useState('');
   const [notificationText, setNotificationText] = useState('');
@@ -41,7 +41,8 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
 
   const fetchTranscript = async () => {
     try {
-
+      setShowLoadingSpinner(true)
+    
       // Generate a unique key for caching based on both videoId and language
       const cacheKey = `${videoId}_${language}`;
       
@@ -51,7 +52,7 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
         const cachedData = cachedTranscripts.get(cacheKey);
         setTranscript(cachedData);
       } else {
-
+        
         // Get user data from localStorage
         const userProfile = JSON.parse(localStorage.getItem('profile'));
         // const jwtToken = localStorage.getItem('jwtToken'); // Retrieve the JWT token from localStorage
@@ -96,6 +97,9 @@ const YouTubeSubtitles = ({ videoId ,handleGetCaptions}) => {
       showNotification(`${error}`,'error');
       console.error('Error fetching subtitles:', error);
     }
+    finally{
+      setShowLoadingSpinner(false)
+    }
   };
 
   
@@ -139,14 +143,18 @@ ${text}
       )}
       {
         transcript.length==0 && 
-        (  <button
+        (  !showLoadingSpinner ? (<button
           type="button"
           className="btn btn-primary center-button"
           onClick={fetchTranscript}
         >
           Get Captions
         </button>)
-      }
+        :(
+         <Spinner />
+          )
+        )
+        }
      
 
       {transcript.length > 0 &&

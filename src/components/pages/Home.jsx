@@ -44,7 +44,7 @@ const Home = () => {
 
 
       {warningMessage && <p className="text-danger mt-2">{warningMessage}</p>}
-
+     
       {showSubtitleBlock && <YouTubeSubtitles videoId={videoId} handleGetCaptions={handleGetCaptions} />}
     </div>
   );
